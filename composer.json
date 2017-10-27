@@ -9,6 +9,8 @@
           "email": "estaticzz@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
           "Estaticzz\\AdminGrid\\": "src/"
