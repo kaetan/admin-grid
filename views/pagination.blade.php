@@ -24,7 +24,14 @@
     </div>
     <div class="col-sm-3">
         <div class="pull-right">
-            21 из 284&nbsp;&nbsp;&nbsp;<label><!-- Показывать --><select name="size" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label>
+            21 из 284&nbsp;&nbsp;&nbsp;
+            <label>
+                <select name="size" class="form-control input-sm js-pagination-size">
+                    @foreach($sizes as $size)
+                        <option value="{{ assemble_url(null, ['size' => $size]) }}" @if (request('size') == $size) selected="selected" @endif>{{ $size == 'all' ? 'Все' : $size }}</option>
+                    @endforeach
+                </select>
+            </label>
         </div>
     </div>
 </div>

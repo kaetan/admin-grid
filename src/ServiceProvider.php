@@ -11,6 +11,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
+        include_once('helpers.php');
+
         $this->loadViewsFrom(__DIR__.'/../views', 'admin-grid');
 
         $this->publishes([

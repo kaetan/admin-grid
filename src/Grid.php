@@ -11,6 +11,9 @@ class Grid
     public $actions = [];
     public $params = [];
     public $tabs = [];
+    public $sizes = [
+        10, 20, 30, 50, 100, 200, 'all'
+    ];
     public $modelClass;
     public $subRowContent;
 
@@ -104,6 +107,7 @@ class Grid
             'tabs' => $this->getTabs(),
             'columns' => $this->getColumns(),
             'actions' => $this->getActions(),
+            'sizes' => $this->sizes,
             'grid' => $this,
         ])->render();
     }
