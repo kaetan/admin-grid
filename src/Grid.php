@@ -63,8 +63,7 @@ class Grid
 
     public function getSize()
     {
-        // TODO:
-        return self::PAGE_SIZE_DEFAULT;
+        return request('size', self::PAGE_SIZE_DEFAULT);
     }
 
     public function getOrder($split = false)
@@ -92,7 +91,7 @@ class Grid
         $size = $this->getSize();
 
         return with(new $this->modelClass)->orderBy($order[0], $order[1])
-            ->paginate($size);
+            ->paginate($size == 'all' ? 9999999999 : $size);
     }
 
     public function render()

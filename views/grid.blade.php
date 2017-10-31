@@ -12,10 +12,9 @@
         <div id="tab-1" class="tab-pane active">
             <div class="panel-body">
 
-                @include('admin-grid::pagination', [
+                @include('admin-grid::table-control-top', [
                     'paginator' => $paginator,
                     'paginationOffset' => $paginationOffset,
-                    'position' => 'top',
                 ])
 
                 <div class="row">
@@ -62,10 +61,9 @@
                     </div>
                 </div>
 
-                @include('admin-grid::pagination', [
+                @include('admin-grid::table-control-bottom', [
                     'paginator' => $paginator,
                     'paginationOffset' => $paginationOffset,
-                    'position' => 'bottom',
                 ])
             </div>
         </div>
