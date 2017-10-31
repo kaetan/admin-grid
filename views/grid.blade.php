@@ -19,13 +19,31 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <table class="js-footable table toggle-arrow-small" data-sorting="false">
+                        <table class="js-footable footable table toggle-arrow-small" data-sorting="false">
                             <thead>
                             <tr>
                                 <th data-sort-ignore="true"></th>
 
                                 @foreach ($columns as $k => $col)
-                                    <th {{--data-toggle="true" --}} data-sort-ignore="true" @if ($col->hide) data-hide="{{ $col->hide }}" @endif>{{ $col->title}}</th>
+                                    <th {{--data-toggle="true" --}}
+                                        data-sort-ignore="true"
+                                        @if ($col->hide) data-hide="{{ $col->hide }}" @endif
+                                        class="
+                                            @if ($col->isSortable()) footable-sortable @endif
+                                            @if ($col->code == $sort->field) footable-sorted{{$sort->direction != 'desc' ? '-desc' : ''}} @endif"
+                                    >
+                                        @if ($col->isSortable())
+                                            <a href="{{ assemble_url(null, ['sort' => $col->getSort($col->code == $sort->field ? $sort->direction : null)]) }}">
+                                        @endif
+                                                {{ $col->title}}
+
+                                        @if ($col->isSortable())
+                                            </a>
+                                            @if ($col->code == $sort->field)
+                                                <span class="footable-sort-indicator"></span>
+                                            @endif
+                                        @endif
+                                    </th>
                                 @endforeach
 
                                 @if (!empty($actions))

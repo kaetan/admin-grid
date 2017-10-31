@@ -18,7 +18,9 @@ class Grid
     public $subRowContent;
 
     const PAGE_SIZE_DEFAULT = 20;
-    const ORDER_DEFAULT = 'id-desc';
+
+    const SORT_DELIMITER = '-';
+    const SORT_DEFAULT = 'id-desc';
 
     const COLUMN_TYPE_BOOLEAN = 'boolean';
     const COLUMN_TYPE_STRING = 'string';
@@ -50,6 +52,16 @@ class Grid
         return $this;
     }
 
+    public function getColumnByCode($code)
+    {
+        $cols = $this->getColumns();
+        foreach ($cols as $col) {
+            if ($col->code == $code) {
+                return $col;
+            }
+        }
+    }
+
     public function getColumns()
     {
         return $this->columns;
@@ -66,18 +78,10 @@ class Grid
         return request('size', self::PAGE_SIZE_DEFAULT);
     }
 
-    public function getOrder($split = false)
+    public function getSort()
     {
-        // TODO:
-        $order = self::ORDER_DEFAULT;
-        if ($split) {
-            $order = explode('-', $order);
-            if (empty($order[1])) {
-                // TODO:
-            }
-        }
-
-        return $order;
+        $sort = request('sort', self::SORT_DEFAULT);
+        return new Sort($sort);
     }
 
     public function getTabs()
@@ -87,11 +91,18 @@ class Grid
 
     public function getPaginator()
     {
-        $order = $this->getOrder(true);
+        $sort = $this->getSort();
         $size = $this->getSize();
 
-        return with(new $this->modelClass)->orderBy($order[0], $order[1])
-            ->paginate($size == 'all' ? 9999999999 : $size);
+        $query = with(new $this->modelClass)
+            ->orderBy($sort->field, $sort->direction);
+
+        $column = $this->getColumnByCode($sort->field);
+        if ($column->hasSortFunction()) {
+            $query = ($column->getSortFunction())($query, $column->code);
+        }
+
+        return $query->paginate($size == 'all' ? 9999999999 : $size);
     }
 
     public function render()
@@ -101,7 +112,7 @@ class Grid
             'paginator' => $paginator,
             'paginationOffset' => self::PAGINATION_OFFSET,
             'size' => $this->getSize(),
-            'order' => $this->getOrder(),
+            'sort' => $this->getSort(),
             'rows' => $paginator->items(),
             'tabs' => $this->getTabs(),
             'columns' => $this->getColumns(),

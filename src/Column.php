@@ -7,12 +7,13 @@ class Column
     public $title;
     public $code;
     public $type = Grid::COLUMN_TYPE_STRING;
-    public $sortable = true;
+    public $sortable = 'desc';
     public $editable = false;
     public $formatFunction = null;
+    public $sortFunction = null;
     public $hide;
 
-    public function __construct($codeOrOptions, $title = '', $sortable = true, $editable = false, $type = Grid::COLUMN_TYPE_STRING)
+    public function __construct($codeOrOptions, $title = '', $sortable = 'desc', $editable = false, $type = Grid::COLUMN_TYPE_STRING)
     {
         if (is_array($codeOrOptions)) {
             $this->setOptions($codeOrOptions);
@@ -22,7 +23,7 @@ class Column
         $code = $codeOrOptions;
         $this->title = $title;
         $this->code = $code;
-        $this->sortable = (bool)$sortable;
+        $this->sortable = $sortable;
         $this->editable = (bool)$editable;
         $this->type = $type;
     }
@@ -69,5 +70,44 @@ class Column
             default:
                 return $row->{$this->code};
         }
+    }
+
+    public function isSortable()
+    {
+        return (bool)$this->sortable;
+    }
+
+    public function getSort($current = null)
+    {
+        if (!$this->isSortable()) {
+            return;
+        }
+
+        $direction = $this->sortable;
+        if ($current) {
+            if ($current == 'asc') {
+                $direction = 'desc';
+            } else {
+                $direction = 'asc';
+            }
+        }
+
+        return $this->code . Sort::DELIMITER . $direction;
+    }
+
+    public function hasSortFunction()
+    {
+        return (bool)$this->getSortFunction();
+    }
+
+    public function getSortFunction()
+    {
+        return $this->sortFunction;
+    }
+
+    public function setSortFunction($function)
+    {
+        $this->sortFunction = $function;
+        return $this;
     }
 }
