@@ -12,6 +12,7 @@ class Grid
     public $params = [];
     public $tabs = [];
     public $modelClass;
+    public $subRowContent;
 
     const PAGE_SIZE_DEFAULT = 20;
     const ORDER_DEFAULT = 'id-desc';
@@ -20,6 +21,8 @@ class Grid
     const COLUMN_TYPE_STRING = 'string';
     const COLUMN_TYPE_SELECT = 'select';
     const COLUMN_TYPE_CHECKBOX = 'checkbox';
+
+    const PAGINATION_OFFSET = 4;
 
     public function __construct($modelClass = '', $cols = [], $actions = [], $params = [], $order = null)
     {
@@ -33,15 +36,26 @@ class Grid
         }
     }
 
-    public function setColumns($cols)
+    public function getActions()
     {
-        $this->columns = $cols;
+        return $this->actions;
+    }
+
+    public function setActions($actions)
+    {
+        $this->actions = $actions;
         return $this;
     }
 
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    public function setColumns($cols)
+    {
+        $this->columns = $cols;
+        return $this;
     }
 
     public function getSize()
@@ -82,11 +96,37 @@ class Grid
     {
         $paginator = $this->getPaginator();
         return view('admin-grid::grid', [
+            'paginator' => $paginator,
+            'paginationOffset' => self::PAGINATION_OFFSET,
             'size' => $this->getSize(),
             'order' => $this->getOrder(),
             'rows' => $paginator->items(),
             'tabs' => $this->getTabs(),
             'columns' => $this->getColumns(),
+            'actions' => $this->getActions(),
+            'grid' => $this,
         ])->render();
+    }
+
+    /**
+     * Устанавливает контент внизу строки
+     * @return null
+     */
+    public function setSubRowContent($value)
+    {
+        $this->subRowContent = $value;
+    }
+
+    /**
+     * Получает контент внизу строки
+     * @return null
+     */
+    public function getSubRowContent($row, $i) {
+
+        if (is_callable($this->subRowContent)) {
+            return ($this->subRowContent)($row, $i, $this);
+        }
+
+//        return $this->subRowContent;
     }
 }

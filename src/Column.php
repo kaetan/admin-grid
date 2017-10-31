@@ -10,14 +10,31 @@ class Column
     public $sortable = true;
     public $editable = false;
     public $formatFunction = null;
+    public $hide;
 
-    public function __construct($code, $title = '', $sortable = true, $editable = false, $type = Grid::COLUMN_TYPE_STRING)
+    public function __construct($codeOrOptions, $title = '', $sortable = true, $editable = false, $type = Grid::COLUMN_TYPE_STRING)
     {
+        if (is_array($codeOrOptions)) {
+            $this->setOptions($codeOrOptions);
+            return;
+        }
+
+        $code = $codeOrOptions;
         $this->title = $title;
         $this->code = $code;
         $this->sortable = (bool)$sortable;
         $this->editable = (bool)$editable;
         $this->type = $type;
+    }
+
+    /**
+     * @return null
+     */
+    public function setOptions($options)
+    {
+        foreach ($options as $option => $value) {
+            $this->{$option} = $value;
+        }
     }
 
     public function setFormatFunction($function)
