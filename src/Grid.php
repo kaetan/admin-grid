@@ -16,6 +16,7 @@ class Grid
     ];
     public $modelClass;
     public $subRowContent;
+    public $filterFunction;
 
     const PAGE_SIZE_DEFAULT = 20;
 
@@ -96,6 +97,27 @@ class Grid
 
         $query = with(new $this->modelClass)
             ->orderBy($sort->field, $sort->direction);
+
+        $params = request()->all();
+        unset($params['size']);
+        unset($params['page']);
+        unset($params['sort']);
+
+        if ($this->filterFunction) {
+            $query = ($this->filterFunction)($query, $params, $this);
+        } else {
+
+            $row = with(new $this->modelClass)->first();
+
+            if ($row) {
+                foreach ($params as $param => $value) {
+                    if (!isset($row->{$param}) || ($value === '') || ($value === null)) {
+                        continue;
+                    }
+                    $query = $query->where($param, $value);
+                }
+            }
+        }
 
         $column = $this->getColumnByCode($sort->field);
         if ($column->hasSortFunction()) {
