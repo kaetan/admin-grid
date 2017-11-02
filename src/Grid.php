@@ -17,6 +17,7 @@ class Grid
     public $modelClass;
     public $subRowContent;
     public $filterFunction;
+    public $sideCol;
 
     const PAGE_SIZE_DEFAULT = 20;
 
@@ -141,6 +142,7 @@ class Grid
             'actions' => $this->getActions(),
             'sizes' => $this->sizes,
             'grid' => $this,
+            'sideCol' => $this->sideCol,
         ])->render();
     }
 
@@ -164,5 +166,9 @@ class Grid
         }
 
 //        return $this->subRowContent;
+    }
+
+    public function setSideCol($html) {
+        $this->sideCol = $html;
     }
 }
