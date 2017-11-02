@@ -96,8 +96,7 @@ class Grid
         $sort = $this->getSort();
         $size = $this->getSize();
 
-        $query = with(new $this->modelClass)
-            ->orderBy($sort->field, $sort->direction);
+        $query = new $this->modelClass;
 
         $params = request()->all();
         unset($params['size']);
@@ -120,9 +119,14 @@ class Grid
             }
         }
 
-        $column = $this->getColumnByCode($sort->field);
-        if ($column->hasSortFunction()) {
-            $query = ($column->getSortFunction())($query, $column->code);
+        if ($sort) {
+            $column = $this->getColumnByCode($sort->field);
+
+            if ($column && $column->hasSortFunction()) {
+                $query = ($column->getSortFunction())($query, $sort->direction);
+            } else {
+                $query = $query->orderBy($sort->field, $sort->direction);
+            }
         }
 
         return $query->paginate($size == 'all' ? 9999999999 : $size);
