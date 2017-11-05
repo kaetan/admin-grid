@@ -10,14 +10,12 @@ class Grid
     public $columns = [];
     public $actions = [];
     public $params = [];
-    public $tabs = [];
     public $sizes = [
         10, 20, 30, 50, 100, 200, 'all'
     ];
     public $modelClass;
     public $subRowContent;
     public $filterFunction;
-    public $sideCol;
 
     const PAGE_SIZE_DEFAULT = 20;
 
@@ -86,11 +84,6 @@ class Grid
         return new Sort($sort);
     }
 
-    public function getTabs()
-    {
-        return [];
-    }
-
     public function getPaginator()
     {
         $sort = $this->getSort();
@@ -141,12 +134,10 @@ class Grid
             'size' => $this->getSize(),
             'sort' => $this->getSort(),
             'rows' => $paginator->items(),
-            'tabs' => $this->getTabs(),
             'columns' => $this->getColumns(),
             'actions' => $this->getActions(),
             'sizes' => $this->sizes,
             'grid' => $this,
-            'sideCol' => $this->sideCol,
         ])->render();
     }
 
@@ -170,9 +161,5 @@ class Grid
         }
 
 //        return $this->subRowContent;
-    }
-
-    public function setSideCol($html) {
-        $this->sideCol = $html;
     }
 }
