@@ -45,7 +45,9 @@
                 <td>
                     <div class="btn-group">
                         @foreach($actions as $action)
-                            <a href="{{ $action->getUrl($row) }}" class="btn-white btn btn-xs">{{ $action->title }}</a>
+                            @if ($action->getUrl($row) !== null)
+                                <a href="{{ $action->getUrl($row) }}" class="btn-white btn btn-xs">{{ $action->title }}</a>
+                            @endif
                         @endforeach
                     </div>
                 </td>
