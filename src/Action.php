@@ -7,6 +7,7 @@ class Action
     public $title;
     public $url;
     public $blank = false;
+    public $buttonClass = false;
 
     public function __construct($title, $url, $blank = false)
     {
@@ -28,5 +29,16 @@ class Action
         }
 
         return ($this->url);
+    }
+
+    public function setBtnClass($class)
+    {
+        $this->buttonClass = $class;
+        return $this;
+    }
+
+    public function getBtnClass()
+    {
+        return $this->buttonClass;
     }
 }

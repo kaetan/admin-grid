@@ -46,7 +46,7 @@
                     <div class="btn-group">
                         @foreach($actions as $action)
                             @if ($action->getUrl($row) !== null)
-                                <a href="{{ $action->getUrl($row) }}" class="btn-white btn btn-xs">{{ $action->title }}</a>
+                                <a href="{{ $action->getUrl($row) }}" class="btn-{{ $action->getBtnClass()?: 'white'}} btn btn-xs">{{ $action->title }}</a>
                             @endif
                         @endforeach
                     </div>
