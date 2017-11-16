@@ -38,10 +38,10 @@
     @foreach ($rows as $i => $row)
         <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
 
-            <td class="{{ $col->getClass() }}"><input type="checkbox" class="i-checks" name="input[]"></td>
+            <td><input type="checkbox" class="i-checks" name="input[]"></td>
 
             @foreach ($columns as $k => $col)
-                <td>{!! $col->getValue($row) !!}</td>
+                <td class="{{ $col->getClass() }}">{!! $col->getValue($row) !!}</td>
             @endforeach
 
             @if (!empty($actions))
