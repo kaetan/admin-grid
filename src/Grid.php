@@ -148,6 +148,16 @@ class Grid
     public function setSubRowContent($value)
     {
         $this->subRowContent = $value;
+        return $this;
+    }
+
+    /**
+     * Устанавливает функцию-замыкание для сортировки
+     * @return null
+     */
+    public function setFilterFunction($function)
+    {
+        $this->filterFunction = $function;
     }
 
     /**
