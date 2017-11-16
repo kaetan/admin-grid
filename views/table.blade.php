@@ -8,8 +8,11 @@
                 data-sort-ignore="true"
                 @if ($col->hide) data-hide="{{ $col->hide }}" @endif
                 class="
-                                            @if ($col->isSortable()) footable-sortable @endif
-            @if ($col->code == $sort->field) footable-sorted{{$sort->direction != 'desc' ? '-desc' : ''}} @endif"
+                    {{ $col->getClass() }}
+                    @if ($col->isSortable()) footable-sortable @endif
+                    @if ($col->code == $sort->field)
+                        footable-sorted{{$sort->direction != 'desc' ? '-desc' : ''}}
+                    @endif"
             >
                 @if ($col->isSortable())
                     <a href="{{ assemble_url(null, ['sort' => $col->getSort($col->code == $sort->field ? $sort->direction : null)]) }}">
@@ -35,7 +38,7 @@
     @foreach ($rows as $i => $row)
         <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
 
-            <td><input type="checkbox" class="i-checks" name="input[]"></td>
+            <td class="{{ $col->getClass() }}"><input type="checkbox" class="i-checks" name="input[]"></td>
 
             @foreach ($columns as $k => $col)
                 <td>{!! $col->getValue($row) !!}</td>
