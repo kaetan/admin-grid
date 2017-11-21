@@ -1,7 +1,9 @@
-<table class="js-footable footable table toggle-arrow-small" data-sorting="false">
+<table class="js-footable footable table toggle-arrow-small" data-sorting="false" style="width: 100%; table-layout: fixed;">
     <thead>
     <tr>
-        <th data-sort-ignore="true"></th>
+        @if ($showSelectColumn)
+            <th data-sort-ignore="true" style="width: 35px;"></th>
+        @endif
 
         @foreach ($columns as $k => $col)
             <th {{--data-toggle="true" --}}
@@ -13,6 +15,7 @@
                     @if ($col->code == $sort->field)
                         footable-sorted{{$sort->direction != 'desc' ? '-desc' : ''}}
                     @endif"
+                style="{{ $col->getStyle() }}"
             >
                 @if ($col->isSortable())
                     <a href="{{ assemble_url(null, ['sort' => $col->getSort($col->code == $sort->field ? $sort->direction : null)]) }}">
@@ -38,15 +41,17 @@
     @foreach ($rows as $i => $row)
         <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
 
-            <td><input type="checkbox" class="i-checks" name="input[]"></td>
+            @if ($showSelectColumn)
+                <td><input type="checkbox" class="i-checks" name="input[]"></td>
+            @endif
 
             @foreach ($columns as $k => $col)
-                <td class="{{ $col->getClass() }}">{!! $col->getValue($row) !!}</td>
+                <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $col->getValue($row) !!}</td>
             @endforeach
 
             @if (!empty($actions))
                 <td>
-                    <div class="btn-group">
+                    <div class="btn-group clearfix">
                         @foreach($actions as $action)
                             @if ($action->getUrl($row) !== null)
                                 <a href="{{ $action->getUrl($row) }}" class="btn-{{ $action->getBtnClass()?: 'white'}} btn btn-xs">{{ $action->title }}</a>

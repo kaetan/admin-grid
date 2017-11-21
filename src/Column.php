@@ -12,6 +12,7 @@ class Column
     public $formatFunction = null;
     public $sortFunction = null;
     public $class;
+    public $style;
     public $hide;
 
     public function __construct($codeOrOptions, $title = '', $sortable = 'desc', $editable = false, $type = Grid::COLUMN_TYPE_STRING)
@@ -121,5 +122,16 @@ class Column
     public function getClass()
     {
         return $this->class;
+    }
+
+    public function setStyle($style)
+    {
+        $this->style = $style;
+        return $this;
+    }
+
+    public function getStyle()
+    {
+        return $this->style;
     }
 }

@@ -16,8 +16,9 @@ class Grid
     public $modelClass;
     public $subRowContent;
     public $filterFunction;
-
-    const PAGE_SIZE_DEFAULT = 20;
+    public $showSelectColumn = true;
+    public $showPaginator = true;
+    public $pageSize = 20;
 
     const SORT_DELIMITER = '-';
     const SORT_DEFAULT = 'id-desc';
@@ -73,9 +74,15 @@ class Grid
         return $this;
     }
 
-    public function getSize()
+    public function setPageSize($size)
     {
-        return request('size', self::PAGE_SIZE_DEFAULT);
+        $this->pageSize = $size;
+        return $this;
+    }
+
+    public function getPageSize()
+    {
+        return request('size', $this->pageSize);
     }
 
     public function getSort()
@@ -87,7 +94,7 @@ class Grid
     public function getPaginator()
     {
         $sort = $this->getSort();
-        $size = $this->getSize();
+        $size = $this->getPageSize();
 
         $query = new $this->modelClass;
 
@@ -131,13 +138,15 @@ class Grid
         return view('admin-grid::grid', [
             'paginator' => $paginator,
             'paginationOffset' => self::PAGINATION_OFFSET,
-            'size' => $this->getSize(),
+            'size' => $this->getPageSize(),
             'sort' => $this->getSort(),
             'rows' => $paginator->items(),
             'columns' => $this->getColumns(),
             'actions' => $this->getActions(),
             'sizes' => $this->sizes,
             'grid' => $this,
+            'showSelectColumn' => $this->showSelectColumn,
+            'showPaginator' => $this->showPaginator,
         ])->render();
     }
 
@@ -164,12 +173,25 @@ class Grid
      * Получает контент внизу строки
      * @return null
      */
-    public function getSubRowContent($row, $i) {
+    public function getSubRowContent($row, $i)
+    {
 
         if (is_callable($this->subRowContent)) {
             return ($this->subRowContent)($row, $i, $this);
         }
 
 //        return $this->subRowContent;
+    }
+
+    public function showSelectColumn($show)
+    {
+        $this->showSelectColumn = $show;
+        return $this;
+    }
+
+    public function showPaginator($show)
+    {
+        $this->showPaginator = $show;
+        return $this;
     }
 }

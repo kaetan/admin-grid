@@ -1,4 +1,6 @@
-@include('admin-grid::table-control-top')
+@if ($showPaginator)
+    @include('admin-grid::table-control-top')
+@endif
 
 <div class="row">
     <div class="col-lg-12">
@@ -6,4 +8,6 @@
     </div>
 </div>
 
-@include('admin-grid::table-control-bottom')
+@if ($showPaginator)
+    @include('admin-grid::table-control-bottom')
+@endif
