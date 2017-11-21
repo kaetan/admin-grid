@@ -51,7 +51,7 @@
 
             @if (!empty($actions))
                 <td>
-                    <div class="btn-group clearfix">
+                    <div class="btn-group clearfix pull-right">
                         @foreach($actions as $action)
                             @if ($action->getUrl($row) !== null)
                                 <a href="{{ $action->getUrl($row) }}" class="btn-{{ $action->getBtnClass()?: 'white'}} btn btn-xs">{{ $action->title }}</a>
