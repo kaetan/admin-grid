@@ -19,6 +19,7 @@ class Grid
     public $showSelectColumn = true;
     public $showPaginator = true;
     public $pageSize = 20;
+    public $fixed = false;
 
     const SORT_DELIMITER = '-';
     const SORT_DEFAULT = 'id-desc';
@@ -71,6 +72,12 @@ class Grid
     public function setColumns($cols)
     {
         $this->columns = $cols;
+        return $this;
+    }
+
+    public function setFixed($fixed)
+    {
+        $this->fixed = $fixed;
         return $this;
     }
 
@@ -147,6 +154,7 @@ class Grid
             'grid' => $this,
             'showSelectColumn' => $this->showSelectColumn,
             'showPaginator' => $this->showPaginator,
+            'fixed' => $this->fixed,
         ])->render();
     }
 

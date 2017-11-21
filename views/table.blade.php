@@ -1,4 +1,4 @@
-<table class="js-footable footable table toggle-arrow-small" data-sorting="false" style="width: 100%; table-layout: fixed;">
+<table class="js-footable footable table toggle-arrow-small" data-sorting="false" style="width: 100%; @if (!empty($fixed))table-layout: fixed; @endif">
     <thead>
     <tr>
         @if ($showSelectColumn)
