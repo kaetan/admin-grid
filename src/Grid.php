@@ -9,6 +9,7 @@ class Grid
     public $order = 'id-desc';
     public $columns = [];
     public $actions = [];
+    public $actionsClass = null;
     public $params = [];
     public $sizes = [
         10, 20, 30, 50, 100, 200, 'all'
@@ -51,6 +52,17 @@ class Grid
     public function setActions($actions)
     {
         $this->actions = $actions;
+        return $this;
+    }
+
+    public function getActionsClass()
+    {
+        return $this->actionsClass;
+    }
+
+    public function setActionsClass($class)
+    {
+        $this->actionsClass = $class;
         return $this;
     }
 
