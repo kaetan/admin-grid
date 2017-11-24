@@ -31,13 +31,13 @@ class Action
         return ($this->url);
     }
 
-    public function setBtnClass($class)
+    public function setClass($class)
     {
         $this->buttonClass = $class;
         return $this;
     }
 
-    public function getBtnClass()
+    public function getClass()
     {
         return $this->buttonClass;
     }
