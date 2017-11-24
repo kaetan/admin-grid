@@ -38,30 +38,37 @@
     </thead>
 
     <tbody>
-    @foreach ($rows as $i => $row)
-        <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
+    @if (count($rows))
+        @foreach ($rows as $i => $row)
+            <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
 
-            @if ($showSelectColumn)
-                <td><input type="checkbox" class="i-checks" name="input[]"></td>
-            @endif
+                @if ($showSelectColumn)
+                    <td><input type="checkbox" class="i-checks" name="input[]"></td>
+                @endif
 
-            @foreach ($columns as $k => $col)
-                <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $col->getValue($row) !!}</td>
-            @endforeach
+                @foreach ($columns as $k => $col)
+                    <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $col->getValue($row) !!}</td>
+                @endforeach
 
-            @if (!empty($actions))
-                <td>
-                    <div class="btn-group clearfix pull-right">
-                        @foreach($actions as $action)
-                            @if ($action->getUrl($row) !== null)
-                                <a href="{{ $action->getUrl($row) }}" class="btn-{{ $action->getBtnClass()?: 'white'}} btn btn-xs">{{ $action->title }}</a>
-                            @endif
-                        @endforeach
-                    </div>
-                </td>
-            @endif
+                @if (!empty($actions))
+                    <td>
+                        <div class="btn-group clearfix pull-right">
+                            @foreach($actions as $action)
+                                @if ($action->getUrl($row) !== null)
+                                    <a href="{{ $action->getUrl($row) }}" class="btn-{{ $action->getBtnClass()?: 'white'}} btn btn-xs">{{ $action->title }}</a>
+                                @endif
+                            @endforeach
+                        </div>
+                    </td>
+                @endif
+            </tr>
+            {!! $grid->getSubRowContent($row, $i) !!}
+        @endforeach
+    @else
+        @php($colCount = count($columns) + !empty($actions) + $showSelectColumn)
+        <tr>
+            <td colspan="{{ $colCount }}" class="text-center">Нет записей</td>
         </tr>
-        {!! $grid->getSubRowContent($row, $i) !!}
-    @endforeach
+    @endif
     </tbody>
 </table>

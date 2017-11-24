@@ -114,8 +114,8 @@ class Grid
             $query = ($this->filterFunction)($query, $params, $this);
         } else {
 
+            // TODO: find another way to get table cols
             $row = with(new $this->modelClass)->first();
-
             if ($row) {
                 foreach ($params as $param => $value) {
                     if (!isset($row->{$param}) || ($value === '') || ($value === null)) {
@@ -175,6 +175,7 @@ class Grid
     public function setFilterFunction($function)
     {
         $this->filterFunction = $function;
+        return $this;
     }
 
     /**
