@@ -107,6 +107,12 @@ class Column
         return $this->sortFunction;
     }
 
+    public function setSortable($sortable)
+    {
+        $this->sortable = $sortable;
+        return $this;
+    }
+
     public function setSortFunction($function)
     {
         $this->sortFunction = $function;

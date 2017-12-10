@@ -14,13 +14,16 @@ class Grid
     public $sizes = [
         10, 20, 30, 50, 100, 200, 'all'
     ];
+    public $items = null;
     public $modelClass;
+    public $model;
     public $subRowContent;
     public $filterFunction;
     public $showSelectColumn = true;
     public $showPaginator = true;
     public $pageSize = 20;
     public $fixed = false;
+    public $addUrl = false;
 
     const SORT_DELIMITER = '-';
     const SORT_DEFAULT = 'id-desc';
@@ -32,9 +35,19 @@ class Grid
 
     const PAGINATION_OFFSET = 4;
 
-    public function __construct($modelClass = '', $cols = [], $actions = [], $params = [], $order = null)
+    public function __construct($modelOrItems = '', $cols = [], $actions = [], $params = [], $order = null)
     {
-        $this->modelClass = $modelClass;
+        if (is_a($modelOrItems, 'Illuminate\Database\Eloquent\Collection')) {
+            $this->items = $modelOrItems;
+        } else if (is_array($modelOrItems)) {
+            $this->items = collect($modelOrItems);
+        } else if (is_string($modelOrItems)) {
+            $this->modelClass = $modelOrItems;
+            $this->model = new $modelOrItems;
+        } else {
+            $this->model = $modelOrItems;
+        }
+
         $this->columns = $cols;
         $this->actions = $actions;
         $this->params = $params;
@@ -112,12 +125,17 @@ class Grid
 
     public function getPaginator()
     {
+        // TODO: ability to transfer own paginator
+        if (!$this->model) {
+            return;
+        }
+
         $sort = $this->getSort();
         $size = $this->getPageSize();
 
-        $query = new $this->modelClass;
-
+        $query = clone $this->model;
         $params = request()->all();
+
         unset($params['size']);
         unset($params['page']);
         unset($params['sort']);
@@ -125,16 +143,12 @@ class Grid
         if ($this->filterFunction) {
             $query = ($this->filterFunction)($query, $params, $this);
         } else {
-
-            // TODO: find another way to get table cols
-            $row = with(new $this->modelClass)->first();
-            if ($row) {
-                foreach ($params as $param => $value) {
-                    if (!isset($row->{$param}) || ($value === '') || ($value === null)) {
-                        continue;
-                    }
-                    $query = $query->where($param, $value);
+            foreach ($params as $param => $value) {
+                $model = $this->model->getModel();
+                if (!$model || !$model->hasField($param) || ($value === '') || ($value === null)) {
+                    continue;
                 }
+                $query = $query->where($param, $value);
             }
         }
 
@@ -159,7 +173,7 @@ class Grid
             'paginationOffset' => self::PAGINATION_OFFSET,
             'size' => $this->getPageSize(),
             'sort' => $this->getSort(),
-            'rows' => $paginator->items(),
+            'rows' => $this->items ?: $paginator->items(),
             'columns' => $this->getColumns(),
             'actions' => $this->getActions(),
             'sizes' => $this->sizes,
@@ -167,6 +181,7 @@ class Grid
             'showSelectColumn' => $this->showSelectColumn,
             'showPaginator' => $this->showPaginator,
             'fixed' => $this->fixed,
+            'addUrl' => $this->addUrl,
         ])->render();
     }
 
@@ -213,6 +228,12 @@ class Grid
     public function showPaginator($show)
     {
         $this->showPaginator = $show;
+        return $this;
+    }
+
+    public function addAddUrl($url)
+    {
+        $this->addUrl = $url;
         return $this;
     }
 }
