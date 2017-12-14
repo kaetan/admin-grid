@@ -24,9 +24,11 @@ class Grid
     public $pageSize = 20;
     public $fixed = false;
     public $addUrl = false;
+    public $sortable = true;
 
     const SORT_DELIMITER = '-';
-    const SORT_DEFAULT = 'id-desc';
+    public static $sortDefault = 'id-desc';
+    public static $showDashOnEmpty = false;
 
     const COLUMN_TYPE_BOOLEAN = 'boolean';
     const COLUMN_TYPE_STRING = 'string';
@@ -119,8 +121,17 @@ class Grid
 
     public function getSort()
     {
-        $sort = request('sort', self::SORT_DEFAULT);
+        $sort = request('sort', self::$sortDefault);
         return new Sort($sort);
+    }
+
+    public static function setDefaultSort($value)
+    {
+        self::$sortDefault = $value;
+    }
+    public static function setDefaultShowDash($value)
+    {
+        self::$showDashOnEmpty = $value;
     }
 
     public function getPaginator()
@@ -182,6 +193,8 @@ class Grid
             'showPaginator' => $this->showPaginator,
             'fixed' => $this->fixed,
             'addUrl' => $this->addUrl,
+            'sortable' => $this->sortable,
+            'showDashOnEmpty' => self::$showDashOnEmpty,
         ])->render();
     }
 
@@ -235,5 +248,16 @@ class Grid
     {
         $this->addUrl = $url;
         return $this;
+    }
+
+    public function setSortable($sortable)
+    {
+        $this->sortable = $sortable;
+        return $this;
+    }
+
+    public function isSortable()
+    {
+        return (bool)$this->sortable;
     }
 }

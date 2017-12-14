@@ -11,18 +11,18 @@
                 @if ($col->hide) data-hide="{{ $col->hide }}" @endif
                 class="
                     {{ $col->getClass() }}
-                    @if ($col->isSortable()) footable-sortable @endif
+                    @if ($sortable && $col->isSortable()) footable-sortable @endif
                     @if ($col->code == $sort->field)
                         footable-sorted{{$sort->direction != 'desc' ? '-desc' : ''}}
                     @endif"
                 style="{{ $col->getStyle() }}"
             >
-                @if ($col->isSortable())
+                @if ($sortable && $col->isSortable())
                     <a href="{{ assemble_url(null, ['sort' => $col->getSort($col->code == $sort->field ? $sort->direction : null)]) }}">
                         @endif
                         {{ $col->title}}
 
-                        @if ($col->isSortable())
+                        @if ($sortable && $col->isSortable())
                     </a>
                     @if ($col->code == $sort->field)
                         <span class="footable-sort-indicator"></span>
@@ -47,7 +47,13 @@
                 @endif
 
                 @foreach ($columns as $k => $col)
-                    <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $col->getValue($row) !!}</td>
+                    @php
+                        $value = trim($col->getValue($row));
+                        if (!$value && !empty($showDashOnEmpty)) {
+                            $value = '&mdash;';
+                        }
+                    @endphp
+                    <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $value !!}</td>
                 @endforeach
 
                 @if (!empty($actions))
