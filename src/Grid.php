@@ -9,9 +9,7 @@ class Grid
     public $order = 'id-desc';
     public $columns = [];
     public $actions = [];
-    public $massActions = [
-        ''
-    ];
+    public $massActions = [];
     public $actionsClass = null;
     public $params = [];
     public $sizes = [
@@ -84,14 +82,15 @@ class Grid
         return $this;
     }
 
-    public function addMassAction()
+    public function getMassActions()
     {
         return $this->massActions;
     }
 
-    public function getMassActions()
+    public function addMassAction($action)
     {
-        return $this->massActions;
+        $this->massActions[] = $action;
+        return $this;
     }
 
     public function setMassActions($actions)
