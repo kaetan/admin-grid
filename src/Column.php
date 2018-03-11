@@ -9,8 +9,9 @@ class Column
     public $type = Grid::COLUMN_TYPE_STRING;
     public $sortable = 'desc';
     public $editable = false;
-    public $formatFunction = null;
-    public $sortFunction = null;
+    public $formatFunction;
+    public $sortFunction;
+    public $filterFunction;
     public $class;
     public $style;
     public $hide;
@@ -107,15 +108,31 @@ class Column
         return $this->sortFunction;
     }
 
+    public function setSortFunction($function)
+    {
+        $this->sortFunction = $function;
+        return $this;
+    }
+
     public function setSortable($sortable)
     {
         $this->sortable = $sortable;
         return $this;
     }
 
-    public function setSortFunction($function)
+    public function hasFilterFunction()
     {
-        $this->sortFunction = $function;
+        return (bool)$this->getFilterFunction();
+    }
+
+    public function getFilterFunction()
+    {
+        return $this->filterFunction;
+    }
+
+    public function setFilterFunction($function)
+    {
+        $this->filterFunction = $function;
         return $this;
     }
 

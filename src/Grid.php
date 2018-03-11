@@ -20,6 +20,7 @@ class Grid
     public $model;
     public $subRowContent;
     public $filterFunction;
+    public $filters = [];
     public $showSelectColumn = true;
     public $showPaginator = true;
     public $pageSize = 20;
@@ -147,6 +148,7 @@ class Grid
     {
         self::$sortDefault = $value;
     }
+
     public static function setDefaultShowDash($value)
     {
         self::$showDashOnEmpty = $value;
@@ -169,21 +171,41 @@ class Grid
         unset($params['page']);
         unset($params['sort']);
 
+        // Если для грида определена своя функция фильтрации, то остальные правила не учитываем
+        // TODO: это старый вариант и от него можно отказаться в пользу отдельный правил фильтрации по колонкам или параметрам реквеста
         if ($this->filterFunction) {
             $query = ($this->filterFunction)($query, $params, $this);
         } else {
             foreach ($params as $param => $value) {
-                $model = $this->model->getModel();
-                if (!$model || !$model->hasField($param) || ($value === '') || ($value === null)) {
+
+                $value = trim($value);
+                if (($value === '') || ($value === null)) {
                     continue;
                 }
-                $query = $query->where($param, $value);
+
+                $column = $this->getColumnByCode($param);
+
+                // Сначала проверяем наличие правила фильтрации по параметру из реквеста
+                if ($filter = $this->getFilterByParam($param)) {
+
+                    $query = ($filter)($query, $param, $value, $this);
+
+                // Далее проверяем наличие правила фильтрации по названию колонки
+                } else if ($column && $column->hasFilterFunction()) {
+
+                    $query = ($column->getFilterFunction())($query, $value);
+
+                // В противном случае просто накладываем условие точного соответствия значения при наличии такой колонки
+                } else {
+                    if ($this->model->hasField($param)) {
+                        $query = $query->where($param, $value);
+                    }
+                }
             }
         }
 
         if ($sort) {
             $column = $this->getColumnByCode($sort->field);
-
             if ($column && $column->hasSortFunction()) {
                 $query = ($column->getSortFunction())($query, $sort->direction);
             } else {
@@ -229,11 +251,46 @@ class Grid
 
     /**
      * Устанавливает функцию-замыкание для сортировки
+     * TODO: старый вариант, можно отказаться от него
      * @return null
      */
     public function setFilterFunction($function)
     {
         $this->filterFunction = $function;
+        return $this;
+    }
+
+    /**
+     * Возвращает функцию-фильтрацию по парамметру
+     * @param $param
+     * @return mixed|null
+     */
+    public function getFilterByParam($param)
+    {
+        return isset($this->filters[$param]) ? $this->filters[$param] : null;
+    }
+
+    /**
+     * Добавлеет функцию-фильтрацию по парамметру
+     * @param $param
+     * @param $function
+     * @return $this
+     */
+    public function addFilter($param, $function)
+    {
+        $this->filters[$param] = $function;
+        return $this;
+    }
+
+    /**
+     * Задает отдельные функции фильтрации по парметрам
+     * @param $param
+     * @param $function
+     * @return $this
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
         return $this;
     }
 
