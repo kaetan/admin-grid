@@ -22,6 +22,15 @@ class Action
         return $this;
     }
 
+    public function getTitle($row)
+    {
+        if (is_callable($this->title)) {
+            return ($this->title)($row);
+        }
+
+        return ($this->title);
+    }
+
     public function getUrl($row)
     {
         if (is_callable($this->url)) {

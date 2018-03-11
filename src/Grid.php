@@ -9,6 +9,9 @@ class Grid
     public $order = 'id-desc';
     public $columns = [];
     public $actions = [];
+    public $massActions = [
+        ''
+    ];
     public $actionsClass = null;
     public $params = [];
     public $sizes = [
@@ -78,6 +81,22 @@ class Grid
     public function setActionsClass($class)
     {
         $this->actionsClass = $class;
+        return $this;
+    }
+
+    public function addMassAction()
+    {
+        return $this->massActions;
+    }
+
+    public function getMassActions()
+    {
+        return $this->massActions;
+    }
+
+    public function setMassActions($actions)
+    {
+        $this->massActions = $actions;
         return $this;
     }
 
@@ -187,6 +206,7 @@ class Grid
             'rows' => $this->items ?: $paginator->items(),
             'columns' => $this->getColumns(),
             'actions' => $this->getActions(),
+            'massActions' => $this->getMassActions(),
             'sizes' => $this->sizes,
             'grid' => $this,
             'showSelectColumn' => $this->showSelectColumn,
