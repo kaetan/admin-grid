@@ -22,7 +22,7 @@ class Action
         return $this;
     }
 
-    public function getTitle($row)
+    public function getTitle($row = null)
     {
         if (is_callable($this->title)) {
             return ($this->title)($row);
