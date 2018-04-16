@@ -1,8 +1,8 @@
-<table class="js-footable footable table toggle-arrow-small" data-sorting="false" style="width: 100%; @if (!empty($fixed))table-layout: fixed; @endif">
+<table class="js-footable js-select-all-container footable table toggle-arrow-small" data-sorting="false" style="width: 100%; @if (!empty($fixed))table-layout: fixed; @endif">
     <thead>
     <tr>
         @if ($showSelectColumn)
-            <th data-sort-ignore="true" style="width: 35px;"></th>
+            <th data-sort-ignore="true" style="width: 35px;"><input type="checkbox" class="i-checks" id="js-select-all"></th>
         @endif
 
         @foreach ($columns as $k => $col)
@@ -43,7 +43,7 @@
             <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
 
                 @if ($showSelectColumn)
-                    <td><input type="checkbox" class="i-checks" name="input[]"></td>
+                    <td><input type="checkbox" class="i-checks" name="input[{{ $row->id }}]" data-id="{{ $row->id }}"></td>
                 @endif
 
                 @foreach ($columns as $k => $col)
