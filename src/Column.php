@@ -15,6 +15,8 @@ class Column
     public $class;
     public $style;
     public $hide;
+    public $main = true;        // Колонка является основной и показывается по умолчанию
+    public $display = true;     // Колонка отображается
 
     public function __construct($codeOrOptions, $title = '', $sortable = 'desc', $editable = false, $type = Grid::COLUMN_TYPE_STRING)
     {
@@ -156,5 +158,27 @@ class Column
     public function getStyle()
     {
         return $this->style;
+    }
+
+    public function setMain($main)
+    {
+        $this->main = $main;
+        return $this;
+    }
+
+    public function getMain()
+    {
+        return $this->main;
+    }
+
+    public function setDisplay($display)
+    {
+        $this->display = $display;
+        return $this;
+    }
+
+    public function getDisplay()
+    {
+        return $this->display;
     }
 }

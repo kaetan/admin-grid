@@ -6,6 +6,11 @@
         @endif
 
         @foreach ($columns as $k => $col)
+            @php
+                if (!$col->getDisplay()) {
+                    continue;
+                }
+            @endphp
             <th {{--data-toggle="true" --}}
                 data-sort-ignore="true"
                 @if ($col->hide) data-hide="{{ $col->hide }}" @endif
@@ -48,6 +53,9 @@
 
                 @foreach ($columns as $k => $col)
                     @php
+                        if (!$col->getDisplay()) {
+                            continue;
+                        }
                         $value = trim($col->getValue($row));
                         if (!$value && !empty($showDashOnEmpty)) {
                             $value = '&mdash;';
@@ -56,7 +64,7 @@
                     <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $value !!}</td>
                 @endforeach
 
-                @include('admin-grid::actions', ['actions' => !empty($actions)?$actions:[]])
+                @include('admin-grid::actions', ['actions' => !empty($actions) ? $actions : []])
             </tr>
             {!! $grid->getSubRowContent($row, $i) !!}
         @endforeach
