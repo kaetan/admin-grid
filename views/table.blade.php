@@ -48,7 +48,7 @@
             <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
 
                 @if ($showSelectColumn)
-                    <td><input type="checkbox" class="i-checks" name="input[{{ $row->id }}]" data-id="{{ $row->id }}"></td>
+                    @include('admin-grid::select-column', ['row' => $row])
                 @endif
 
                 @foreach ($columns as $k => $col)

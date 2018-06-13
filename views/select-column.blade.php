@@ -1,0 +1,1 @@
+<td><input type="checkbox" class="i-checks" name="input[{{ $row->id }}]" data-id="{{ $row->id }}"></td>
