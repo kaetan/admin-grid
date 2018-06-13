@@ -2,7 +2,7 @@
     <thead>
     <tr>
         @if ($showSelectColumn)
-            <th data-sort-ignore="true" style="width: 35px;"><input type="checkbox" class="i-checks" id="js-select-all"></th>
+            <th data-sort-ignore="true" style="width: 35px;"><input type="checkbox" class="i-checks js-select-all"></th>
         @endif
 
         @foreach ($columns as $k => $col)
