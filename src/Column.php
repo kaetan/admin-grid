@@ -10,6 +10,7 @@ class Column
     public $sortable = 'desc';
     public $editable = false;
     public $formatFunction;
+    public $valueFunction;
     public $sortFunction;
     public $filterFunction;
     public $class;
@@ -17,6 +18,8 @@ class Column
     public $hide;
     public $main = true;        // Колонка является основной и показывается по умолчанию
     public $display = true;     // Колонка отображается
+    public $hidden = null;      // Поле для хранения скрытых элементов колонок(например шаблона поля для редактирования)
+    public $attributes = null;
 
     public function __construct($codeOrOptions, $title = '', $sortable = 'desc', $editable = false, $type = Grid::COLUMN_TYPE_STRING)
     {
@@ -49,10 +52,24 @@ class Column
         return $this;
     }
 
+    public function setValueFunction($function)
+    {
+        $this->valueFunction = $function;
+        return $this;
+    }
+
     public function setTypeBoolean()
     {
         $this->type = Grid::COLUMN_TYPE_BOOLEAN;
         return $this;
+    }
+
+    public function getValueNoFormat($row)
+    {
+        if($this->valueFunction) {
+            return ($this->valueFunction)($row);
+        }
+        return $row->{$this->code};
     }
 
     public function getValue($row)
@@ -61,7 +78,7 @@ class Column
             return ($this->formatFunction)($row);
         }
 
-        $value = $row->{$this->code};
+        $value = $this->getValueNoFormat($row);
 
         switch ($this->type) {
             case Grid::COLUMN_TYPE_BOOLEAN:
@@ -73,7 +90,7 @@ class Column
             case Grid::COLUMN_TYPE_SELECT:
                 return '<select><option>'.$row->{$this->code}.'</option></select>';
             default:
-                return $row->{$this->code};
+                return $value;
         }
     }
 
@@ -180,5 +197,16 @@ class Column
     public function getDisplay()
     {
         return $this->display;
+    }
+
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+        return $this;
+    }
+
+    public function getHidden()
+    {
+        return $this->hidden;
     }
 }

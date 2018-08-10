@@ -27,6 +27,8 @@ class Grid
     public $fixed = false;
     public $addUrl = false;
     public $sortable = true;
+    private $tableClass = null;
+    private $rowClass = null;
 
     const SORT_DELIMITER = '-';
     public static $sortDefault = 'id-desc';
@@ -236,6 +238,8 @@ class Grid
             'addUrl' => $this->addUrl,
             'sortable' => $this->sortable,
             'showDashOnEmpty' => self::$showDashOnEmpty,
+            'tableClass' => $this->tableClass,
+            'rowClass' => $this->rowClass,
         ])->render();
     }
 
@@ -335,5 +339,17 @@ class Grid
     public function isSortable()
     {
         return (bool)$this->sortable;
+    }
+
+    public function setTableClass($class)
+    {
+        $this->tableClass = $class;
+        return $this;
+    }
+
+    public function setRowClass($class)
+    {
+        $this->rowClass = $class;
+        return $this;
     }
 }

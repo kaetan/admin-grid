@@ -1,4 +1,4 @@
-<table class="js-footable js-select-all-container footable table toggle-arrow-small" data-sorting="false" style="width: 100%; @if (!empty($fixed))table-layout: fixed; @endif">
+<table class="js-footable js-select-all-container {{ $tableClass }} footable table toggle-arrow-small" data-sorting="false" style="width: 100%; @if (!empty($fixed))table-layout: fixed; @endif">
     <thead>
     <tr>
         @if ($showSelectColumn)
@@ -45,7 +45,7 @@
     <tbody>
     @if (count($rows))
         @foreach ($rows as $i => $row)
-            <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }}">
+            <tr class="{{ $i % 2 == 1 ? 'footable-even' : 'footable-odd' }} {{ $rowClass }}">
 
                 @if ($showSelectColumn)
                     @include('admin-grid::select-column', ['row' => $row])
@@ -60,14 +60,22 @@
                         if (!$value && !empty($showDashOnEmpty)) {
                             $value = '&mdash;';
                         }
+                        $colAttributes = $col->attributes . ' data-value=' . $col->getValueNoFormat($row);
                     @endphp
-                    <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}">{!! $value !!}</td>
+                    <td class="{{ $col->getClass() }}" style="{{ $col->getStyle() }}" {{ $colAttributes ? $colAttributes : '' }}>{!! $value !!}</td>
                 @endforeach
 
                 @include('admin-grid::actions', ['actions' => !empty($actions) ? $actions : []])
             </tr>
             {!! $grid->getSubRowContent($row, $i) !!}
         @endforeach
+        <tr class="hidden">
+        @foreach($columns as $column)
+            <td>
+            {!! $column->getHidden() !!}
+            </td>
+        @endforeach
+        </tr>
     @else
         @php($colCount = count($columns) + !empty($actions) + $showSelectColumn)
         <tr>

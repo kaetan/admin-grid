@@ -8,6 +8,7 @@ class Action
     public $url;
     public $blank = false;
     public $buttonClass = false;
+    public $formClass = false;
 
     public function __construct($title, $url, $blank = false)
     {
@@ -49,5 +50,16 @@ class Action
     public function getClass()
     {
         return $this->buttonClass;
+    }
+
+    public function setFormClass($class)
+    {
+        $this->formClass = $class;
+        return $this;
+    }
+
+    public function getFormClass()
+    {
+        return $this->formClass;
     }
 }
