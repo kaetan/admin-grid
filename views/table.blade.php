@@ -37,7 +37,7 @@
         @endforeach
 
         @if (!empty($actions))
-            <th class="text-right" data-sort-ignore="true">Действия</th>
+            <th class="text-right {{ $grid->getActionsClass() }}" data-sort-ignore="true">Действия</th>
         @endif
     </tr>
     </thead>
