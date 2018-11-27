@@ -29,6 +29,7 @@ class Grid
     public $sortable = true;
     private $tableClass = null;
     private $rowClass = null;
+    private $groupFunction = null;
 
     const SORT_DELIMITER = '-';
     public static $sortDefault = 'id-desc';
@@ -215,6 +216,10 @@ class Grid
             }
         }
 
+        if ($this->groupFunction) {
+            $query = ($this->groupFunction)($query);
+        }
+
         return $query->paginate($size == 'all' ? 9999999999 : $size);
     }
 
@@ -350,6 +355,17 @@ class Grid
     public function setRowClass($class)
     {
         $this->rowClass = $class;
+        return $this;
+    }
+
+    /**
+     * Задаем параметр для групировки по полю
+     * @param $groupFunction
+     * @return $this
+     */
+    public function setGroupBy($groupFunction)
+    {
+        $this->groupFunction = $groupFunction;
         return $this;
     }
 }
