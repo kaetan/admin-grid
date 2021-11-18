@@ -1,6 +1,6 @@
 <?php
 
-namespace Estaticzz\AdminGrid;
+namespace Kaetan\AdminGrid;
 
 class Action
 {

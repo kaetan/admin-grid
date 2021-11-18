@@ -1,19 +1,23 @@
 {
-    "name": "estaticzz/admin-grid",
+    "name": "kaetan/admin-grid",
     "description": "Admin grid",
     "license": "MIT",
-    "version": "1.0.30",
+    "version": "2.0.0",
     "authors": [
         {
           "name": "Marat Khismatullin",
           "email": "estaticzz@gmail.com"
+        },
+        {
+            "name": "Kirill Prokudin",
+            "email": "f4ntasm@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-          "Estaticzz\\AdminGrid\\": "src/"
+          "Kaetan\\AdminGrid\\": "src/"
         }
     },
     "require": {}

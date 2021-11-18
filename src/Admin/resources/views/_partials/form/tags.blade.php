@@ -1,0 +1,1 @@
+<input class="js-tagsinput form-control js-newsletter-car" type="text" name="{{ $name }}" value="{{ $value }}"/>

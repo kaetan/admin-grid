@@ -1,0 +1,114 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+// Variables
+@import "import/style";
+@import "input-label/input-label";
+@import "navigation/navigation";
+
+.link-underline {
+    text-decoration: underline;
+    &:hover {
+        text-decoration: none;
+        color: #676a6c !important;
+    }
+    &:focus {
+        text-decoration: inherit;
+        color: inherit !important;
+    }
+    &--white-hover {
+        &:hover {
+            text-decoration: none;
+            color: #ffffff !important;
+        }
+    }
+}
+
+.ladda-spinner {
+    position: absolute;
+    transform: translateX(-30px) translateY(10px);
+}
+
+.mini-navbar {
+    .payments-block {
+        display: none;
+    }
+}
+
+.popover {
+    z-index: 2070 !important;
+}
+
+li.les13{ background:yellow; border:1px solid blue; color:blue; margin:1px; padding:2px; } #les13_ex1, #les13_ex2{ width:300px; float:left; }
+
+.underline {
+    text-decoration: underline;
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.fixed-footer-items {
+    margin-top: 3px;
+    &__text {
+        font-size: 13px;
+        line-height: 2;
+    }
+
+    &__text--turnover-out {
+        @media (max-width: 640px) {
+            display: none;
+        }
+    }
+
+    &__text--turnover-in {
+        @media (max-width: 640px) {
+            display: none;
+        }
+    }
+}
+
+.fixed-footer-content {
+    display: none;
+}
+
+.form-group--middle {
+    display: flex;
+    align-items: center;
+}
+
+.control-label--no-padding {
+    padding-top: 0px !important;
+}
+
+.i-checks {
+    padding-top: 5px;
+}
+
+.span-divider {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    background: #a0a1a2;
+    height: 1px;
+}
+
+.turnover-select {
+    padding: 6px 9px;
+}
+
+.no-wallets.ibox-content {
+    padding-left: 0px;
+}
+
+.input-group .input-group-addon,
+.input-group.date .input-group-addon i {
+    cursor: default;
+}
+
+.chosen-container-multi .chosen-choices .search-field {
+    padding-left: 12px;
+}
+
+.nav-second-level li a {
+    padding-left: 30px;
+}

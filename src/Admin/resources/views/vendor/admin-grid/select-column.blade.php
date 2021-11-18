@@ -1,0 +1,1 @@
+<td><input type="checkbox" class="i-checks js-mass-update-checkbox" name="input[{{ $row->id }}]" data-id="{{ $row->id }}"></td>

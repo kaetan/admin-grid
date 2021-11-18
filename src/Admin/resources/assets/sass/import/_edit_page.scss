@@ -1,0 +1,14 @@
+.field-group-split {
+  @extend .hr-line-dashed;
+  &+.field-group-split {
+    display: none;
+  }
+}
+[style*="display: none"] {
+  &+.field-group-split {
+    display: none;
+  }
+  &+.field-group-split {
+    background-color: #0000F0;
+  }
+}
